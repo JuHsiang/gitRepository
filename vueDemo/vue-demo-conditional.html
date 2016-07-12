@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>条件渲染v-if/v-show/v-else</title>
+		<script src="vue.js"></script>
+	</head>
+	<body id="demo_conditonal">
+		<div>
+			<!--建议:　需要频繁切换时用v-show(初始渲染高消耗)，改变不大时用v-if(高的切换消耗)-->
+			<p v-if="isOk">Yes</p>
+			<!-- v-else 元素必须立即跟在 v-if 或 v-show 元素的后面 -->
+			<p v-else>No</p>
+			<!-- v-show会始终渲染在DOM上,只做修改元素的display属性 -->
+			<p v-show="isShow">Show</p>
+			<!-- 注: 在组件上用v-show时,不要用v-else,用另一个 v-show -->
+			<p v-else>NotShow</p>
+			<!-- 用<template>元素包装多个元素(<template>元素不会被渲染) -->
+			<!-- 注: v-show不支持此语法 -->
+			<template v-if="isOk">
+			<h1>Title</h1>
+			<p>Paragraph 1</p>
+			<p>Paragraph 2</p>
+			</template>
+		</div>
+		<script>
+			var vm=new Vue({
+				el: '#demo_conditonal',
+				data: {
+					isOk: true,
+					isShow: false,
+				}
+			})
+		</script>
+	</body>
+</html>

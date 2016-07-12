@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>列表渲染Render List</title>
+		<script src="vue.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="app3">
+			<table border="1" style="text-align: center;">
+				<thead>
+					<tr>
+						<td>名称</td>
+						<td>作者</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 语法: item in items 或 item of items(1.0.17 +) -->
+					<!-- 可以给$index取个别名: (index, item) in items -->
+					<tr v-for="(index, book) of books">
+						<td>{{book.title}}</td>
+						<td>{{book.author}}</td>
+						<td @click="deleteItem(index)" style="cursor: pointer;">×</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<button @click="addItem" style="margin-right: 30px;">添加</button>
+				<button @click="save">保存</button>
+			</p>
+			<template v-if="isShow">
+			<p>
+				<label>编号: </label>
+				<input type="text" v-model="book.order">
+			</p>
+			<p>
+				<label>名称: </label>
+				<input type="text" v-model="book.title">
+			</p>
+			<p>
+				<label>作者: </label>
+				<input type="text" v-model="book.author">
+			</p>
+			</template>
+			<ul style="margin-top: 100px;">
+				<template v-for="book in books">
+				<li>{{book.title}}--{{book.author}}</li>
+				</template>
+			</ul>
+		</div>
+		<script>
+		var Book = function(){
+			this.order = '';
+			this.title = '';
+			this.author = '';
+		};
+		var vm = new Vue({
+			el:'#app3',
+			data:{
+				isShow: false,
+				book: new Book(),
+				books: [
+					{order:1,title:'JavaScript高级程序设计',author:'C.Zakas'},
+					{order:2,title:'C#入门经典',author:'Nagel'}
+				]
+			},
+			methods:{
+				deleteItem: function(i){
+					this.books.splice(i,1);
+				},
+				addItem: function(){
+					this.isShow = true;
+					this.book = new Book();
+					this.book.order = this.books.length + 1;
+				},
+				save: function () {
+					console.log(this.book);
+					this.books.push(this.book);
+				}
+			}
+		})
+		</script>
+	</body>
+</html>

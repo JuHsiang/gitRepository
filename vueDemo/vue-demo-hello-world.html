@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Hello world插值表达式{{}}</title>
+		<script  type='text/javascript' src="vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<p>
+				<input type="text" v-model="message"/>
+				<input type="text" v-model="message" debounce="1000"/>
+				<span>{{ message }}</span>
+			</p>
+			<p>
+				<span>{{number}}</span>
+				<!-- v-on:click 缩写成 @click -->
+				<button @click="addNum(true)">+</button>
+				<button @click="addNum(fals)">-</button>
+			</p>
+			<p>
+				<input type="checkbox" v-model="checked"/>{{checked?'选中':'取消选中'}}
+			</p>
+			<p>
+				<input type="radio" name="radio_test" v-model="isOk" :value="true" checked />vue.js
+				<input type="radio" name="radio_test" v-model="isOk" :value="false" />avalon.js
+			</p>
+			<p>
+			    <!-- v-bind:src 缩写成 :src --> 
+				<img :src="isOk?'img/vue_logo.png':'img/avalon_log.png'" style="width: 170px;height: 150px"/>
+			</p>
+			<p>
+				<select v-model="selected" @change="getText(selected)">
+					<option :value="opt.value" v-for="opt in listOpts">{{opt.text}}</option>
+				</select>
+				<span>
+					value:{{selected}} text:{{optText}}
+				</span>
+			</p>
+			<p><pre>data: {{$data | json 2}}</pre></p>
+			<p>
+				<a v-bind:href="url_Html" target="_blank">Go!!!</a>
+			</p>
+		</div>
+		<script>
+			var demo1Vm = new Vue({
+				el:'#app',
+				data:{
+					message: 'Hello, world!',
+					number: 1,
+					checked: false,
+					isOk: true,
+					url_Html: 'vue-demo-list-render.html',
+					/*listOpts:[
+						{id:1,text:'北京'},
+						{id:2,text:'上海'},
+						{id:3,text:'广州'},
+						{id:4,text:'深圳'}
+					],*/
+					listOpts:[
+						{value:1,text:'北京'},
+						{value:2,text:'上海'},
+						{value:3,text:'广州'},
+						{value:4,text:'深圳'}
+					],
+					selected:1,
+					optText:'北京'
+				},
+				methods:{
+					addNum:function(tag){
+						if(tag)
+							this.number++;
+						else
+							this.number--;
+					},
+					getText:function(i){
+						this.optText=this.listOpts[i-1].text;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

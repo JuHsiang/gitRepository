@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Class绑定</title>
+		<script src="vue.js"></script>
+		<style>
+		.static{
+			border:2px solid #F00;
+			width:200px;
+			height: 150px;
+		}
+		.class-a{
+			background-color:green
+		}
+		.class-b{
+			width: 300px;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="demo_attr_class">
+			<!-- 对象语法 -->
+			<div class="static" v-bind:class="{'class-a': isA, 'class-b': isB}"></div>
+			<p>
+				<div class="static" v-bind:class="classObject"></div>
+			</p>
+			<!-- 数组语法 -->
+			<p>
+				<div class="static" v-bind:class="[isA ? classA : '', classB]"></div>
+			</p>
+
+			
+			<p>
+				<input type="checkbox" v-model="isA" :value="true">isA
+			</p>
+			<p>
+				<input type="checkbox" v-model="isB" :value="true">isB
+			</p>
+		</div>
+		<script>
+			var vm=new Vue({
+				el: '#demo_attr_class',
+				data: {
+					isA: false,
+					isB: false,
+					classObject: {
+						'class-a': true,
+						'class-b': false
+					},
+					classA: 'class-a',
+					classB: 'class-b'
+				}
+			})
+		</script>
+	</body>
+</html>

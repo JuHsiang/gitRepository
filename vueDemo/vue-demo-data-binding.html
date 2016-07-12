@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Data Binding数据绑定</title>
+		<script src="vue.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="app2">
+			<p>{{message}}</p>
+			<input type="text" v-model="message">
+		</div>
+		<script>
+			new Vue({
+				el:'#app2',
+				data:{
+					message:'Hello Vue.js!'
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Computed计算属性</title>
+		<script src="vue.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="demo_computed">
+			<p>
+				<input type="text" v-model="fullName">
+			</p>
+			<p>fullName: {{fullName}}</p>
+			<p>firstName: {{firstName}}</p>
+			<p>lastName: {{lastName}}</p>
+		</div>
+		<script>
+			var vm = new Vue({
+				el: '#demo_computed',
+				data: {
+					firstName: 'Foo',
+					lastName: 'Bar',
+					fullName: 'FooBar'
+				},
+				computed: {
+					fullName: {
+						// getter
+						get : function(){
+							return this.firstName + ' ' + this.lastName;
+						},
+						// setter
+						set :function(newValue){
+							var names = newValue.split(' ');
+							if(names.length){
+								this.firstName = names[0];
+								this.lastName = names.length> 1 ? names[1] : '';
+							}
+						}
+					}
+				}
+			});
+
+		// $watch
+		vm.$watch('fullName',function(newVal, oldVal){
+			console.log('newValue:'+ newVal);
+			console.log('oldValue:'+ oldVal);
+		});
+		</script>
+	</body>
+</html>
