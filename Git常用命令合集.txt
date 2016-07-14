@@ -1,0 +1,179 @@
+Git常用命令合集
+
+工作区 Working Directory
+	即本地工作文件存放的区域	
+	
+版本库 Repository
+	工作区有个隐藏的目录.git,既是Git的版本库
+	最重要的是stage（或者叫index）的暂存区,Git还会自动创建的第一个分之master和志向master的指针HEAD
+	把文件添加到Git版本库分两步执行:
+	①. 用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+	②. 用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+一、 本地版本库
+	
+设置个人信息
+	git config --global user.name <"userName">  ----设置用户名
+	git config --global user.email <"userEmail">  ----设置用户Email
+	
+创建版本库(也可以选择一个已经有东西的目录)
+	mkdir <FolderName>  ----创建空目录
+	cd <FolderName>  ----进入目录
+	git init  ----把目录变成Git的版本管理仓库(Git repository)
+注: 版本控制系统是没法跟踪Word文件的改动,建议以纯文本方式编写文件,并使用标准的UTF-8编码
+	
+添加提交文件
+	git add <FileName1> <FileName1> [FolderName]...  ----把文件添加到仓库(可以添加多个文件,也可以添加文件夹)
+	git commit -m <"message">  ----把文件提交到仓库
+
+版本控制
+	1. 修改提交
+	git status  ----查看修改过的文件
+	git diff <FileName>  ----查看文件修改了什么内容(工作区与暂存区的比较)
+	git diff --cached <FileName>  ----查看文件修改了什么内容(工作区与分支(master)的比较)
+	git add <FileName>  git commit -m <"message">  ----对修改的文件做添加提交操作
+	2. 版本回退
+	git log  ----查看提交历史(以便确定要回退到哪个版本)
+	(git log --pretty=oneline) ----简化日志信息
+	注: 日志过长要退出查看日志,按q键即可退出
+	git reflog  ----查看命令历史(以便确定要回到未来的哪个版本)
+	git reset --hard HEAD^  ----回退到上一个版本(HEAD^^ 上上一个版本  HEAD~100 往上100个版本)
+	type <FileName>  ----查看文件内容
+	git reset --hard <commit_id>  ----在执行回退命令窗口为关闭的情况下,可以指定回到未来的某个版本(版本号没必要写全，前四位以上就可以了)
+	3.撤销修改
+	git checkout -- <FileName>  ----放弃工作区的修改(未添加到暂存区时) 注: 记得加"--"
+	git reset HEAD <FileName>  ----放弃提交到暂存区的修改
+	4.删除文件
+	del <FileName>  ----删除工作区文件
+	git rm <FileName> git commit -m <"message">  ----删除版本库中的文件
+	git checkout -- <FileName>  ----工作区文件错删恢复
+	
+二、 远程版本库
+
+远程仓库
+	步骤1:
+	创建SSH Key:  ssh-keygen -t rsa -C <"userEmail">  ----本地Git仓库和GitHub仓库之间的传输是通过SSH加密
+	--> 在用户主目录(C:\Users\xxxx\)里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对
+	注: id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+	注: 'ssh-keygen' 不是内部或外部命令,需要添加系统变量(
+	①. 找到\Git\usr\bin目录下的ssh-keygen.exe,
+	②. 计算机-->属性-->高级系统设置-->环境变量-->系统变量-->编辑Path变量-->添加目录)
+	步骤2:
+	登陆GitHub --> 点击头像旁的倒三角 --> 打开"Settings" --> 点击"SSH and GPG keys"页面：
+	--> 然后点"SSH keys"中的"New SSH Key"按钮，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容
+	--> 点击"Add SSH Key"按钮保存即可
+	
+	GitHub允许添加多个Key，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。
+	在GitHub上免费托管的Git仓库，任何人都可以看到，但只有自己可以改
+
+添加远程库
+	登陆GitHub --> 头像左侧"+" --> "New repository" --> 在"Repository name"处填入仓库名称 --> 其它默认 --> 点击"Create repository"
+	--> 将本地仓库与GitHub仓库做关联,命令如下:
+	git remote add origin git@github.com:<userName>/<repositoryName>.git  注: "<userName>/<repositoryName>"为"GitHub账户名/远程库名"
+	--> 将本地库的所有内容推送到远程库上,命令如下:
+	git push -u origin master
+	注: 由于远程库是空的，在第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，
+	还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+	以后就可以通过命令: git push origin master 做提交了
+	
+从远程库克隆
+	cmd指定本地目录,输入如下命令:
+	git clone git@github.com:<userName>/<repositoryName>.git
+	或 git clone https://github.com/<userName>/<repositoryName>.git  
+	注: "<userName>/<repositoryName>"为"GitHub账户名/远程库名"
+		Git支持多种协议，默认的git://使用ssh，https速度慢而且每次推送都必须输入口令,但只开放http端口的公司内部就无法使用ssh协议而只能用https
+	
+三、 分支管理
+
+创建与合并分支
+	创建创建并切换分支:
+		git checkout -b dev  ---- "-b"参数表示创建并切换
+		(等同于: "git branch dev ----创建分支" + "git checkout dev ----切换分支")
+	查看当前分支(分支前面会标一个*号):
+		git branch  ----查看分支
+	切换回master分支:
+		git checkout master  ----切换分支
+	将dev分支的内容合并到master分支上: 
+		git merge dev  ----合并分支
+	合并完成后删除dev分支:
+		git branch -d dev  ----删除分支
+		
+解决冲突
+	新建并切换分支:
+	git checkout -b feature1
+	
+	修改feature1分支中readme.txt内容:
+	Creating a new branch is quick AND simple.
+	
+	添加并提交feature1分支的内容:
+	git add readme.txt 
+	git commit -m "AND simple"
+	
+	切换到master分支：
+	git checkout master
+	
+	修改master分支中readme.txt内容:
+	Creating a new branch is quick & simple.
+	
+	添加并提交master分支的内容:
+	git add readme.txt 
+	git commit -m "& simple"
+	
+	将feature1分支合并到master分支上:
+	git merge feature1
+	
+	此时会提示:(说明冲突了)
+	Auto-merging <FileName>
+	CONFLICT (content): Merge conflict in <FileName>
+	Automatic merge failed; fix conflicts and then commit the result.
+	
+	查看master分支中的readme.txt文件:	
+		<<<<<<< HEAD
+		Creating a new branch is quick & simple.
+		=======
+		Creating a new branch is quick AND simple.
+		>>>>>>> feature1
+	
+	Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，可以删除标记修改内容后保存:
+		Creating a new branch is quick and simple.
+		
+	再做添加并提交:
+		git add readme.txt 
+		git commit -m "conflict fixed"
+		
+	用带参数的git log也可以看到分支的合并情况：
+		git log --graph --pretty=oneline --abbrev-commit
+
+	最后删除feature1分支：
+		git branch -d feature1
+
+分支管理策略
+	通常，合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+	如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样从分支历史上就可以看出分支信息。
+	使用--no-ff方式的git merge：
+	git merge --no-ff -m "message" <branch>
+	
+Bug分支
+	当前工作现场“储藏”起来: 
+	git stash
+	然后创建分支并修复bug提交
+	
+	查看工作现场存储位置:
+	git stash list
+	
+	恢复工作现场:
+	一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+	另一种方式是用git stash pop，恢复的同时把stash内容也删了
+Feature分支
+多人协作
+标签管理
+创建标签
+操作标签
+使用GitHub
+自定义Git
+忽略特殊文件
+配置别名
+搭建Git服务器
+
+
+
