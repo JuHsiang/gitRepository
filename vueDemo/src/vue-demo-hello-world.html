@@ -9,7 +9,12 @@
 		<div id="app">
 			<p>
 				<input type="text" v-model="message"/>
-				<input type="text" v-model="message" debounce="1000"/>
+				<!-- 在 "change" 而不是 "input" 事件中更新
+				<input type="text" v-model="message" lazy/>
+				自动转换输入的类型为Number
+				<input type="text" v-model="message" number/>
+				延时同步输入的值
+				<input type="text" v-model="message" debounce="1000"/> -->
 				<span>{{ message }}</span>
 			</p>
 			<p>
@@ -27,7 +32,7 @@
 			</p>
 			<p>
 			    <!-- v-bind:src 缩写成 :src --> 
-				<img :src="isOk?'img/vue_logo.png':'img/avalon_log.png'" style="width: 170px;height: 150px"/>
+				<img :src="isOk?'../img/vue_logo.png':'../img/avalon_log.png'" style="width: 170px;height: 150px"/>
 			</p>
 			<p>
 				<select v-model="selected" @change="getText(selected)">
