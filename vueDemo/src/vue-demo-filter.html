@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Filter过滤器</title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+		<div id="demo_filter">
+			<p>
+				<span>{{message | uppercase}}</span>
+			</p>
+		</div>
+	</body>
+	<script>
+		var vm = new Vue({
+			el: '#demo_filter',
+			data: {
+				message: 'hello vue.js'
+			}
+		});
+	</script>
+</html>

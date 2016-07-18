@@ -16,6 +16,8 @@
 				延时同步输入的值
 				<input type="text" v-model="message" debounce="1000"/> -->
 				<span>{{ message }}</span>
+				<!-- 加*则message不会随着数据的改变而更新 -->
+				<span>{{ *message }}</span>
 			</p>
 			<p>
 				<span>{{number}}</span>

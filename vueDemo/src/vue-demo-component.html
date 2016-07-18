@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Component 组件</title>
-	<script src="vue.js"></script>
-	<script src="aa.vue"></script>
-</head>
-<body>
-	
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Component 组件</title>
+		<script src="vue.js"></script>
+		<!-- <script src="aa.vue"></script> -->
+	</head>
+	<body>
+		<div id="demo_comp">
+			<first-component></first-component>
+		</div>
+		<script>
+			/*var firstComponent = Vue.extend({
+				template: '<div>先定义后注册</div>'
+			});
+			Vue.component('first-component', firstComponent);*/
+			
+			// 扩展与注册
+			Vue.component('first-component', {
+				template: '<div>在一个步骤中扩展与注册</div>'
+			});
+			new Vue({
+				el: '#demo_comp'
+			});
+		</script>
+	</body>
 </html>

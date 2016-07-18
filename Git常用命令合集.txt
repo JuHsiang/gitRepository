@@ -164,8 +164,33 @@ Bug分支
 	恢复工作现场:
 	一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
 	另一种方式是用git stash pop，恢复的同时把stash内容也删了
+
 Feature分支
+
 多人协作
+	git remote  ----查看远程库的信息(详细信息)
+	git remote -v  ----查看详细信息(抓取和推送的origin的地址)
+	
+	推送分支: 
+	git push origin <branch-name>  ----推送到远程库<branch-name>分支
+	
+	抓取分支: 
+	git pull
+	注: 如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，
+	用命令git branch --set-upstream-to branch-name origin/branch-name。 或git branch --track origin/dev dev
+
+	在本地创建和远程分支对应的分支: 
+	git checkout -b <branch-name> origin/<branch-name>  ----本地和远程分支的名称最好一致
+
+
+
+
+
+
+
+
+
+
 标签管理
 创建标签
 操作标签
